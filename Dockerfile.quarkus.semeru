@@ -18,6 +18,10 @@ RUN ./mvnw -f pom.quarkus.xml clean package
 RUN chown -R 1001 /app/
 RUN chmod -R 777 /app/
 
+COPY src/main/liberty/config/resources/security/key.p12 /app/key.p12
+RUN chown -R 1001 /app/key.p12
+ENV KEYSTORE_LOCATION=/app/key.p12
+
 COPY startQuarkus.sh /app/
 RUN chmod +x startQuarkus.sh
 RUN ./startQuarkus.sh
