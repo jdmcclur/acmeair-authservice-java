@@ -7,7 +7,7 @@ else
     echo "start checkpoint run"
     for i in {1..500}; do ./pidplus.sh; done
     mkdir cr
-    $JAVA_HOME/bin/java  -Dquarkus.http.host=0.0.0.0 -XX:CRaCCheckpointTo=cr -Dquarkus.http.port=9080 -Dopenj9.internal.criu.unprivilegedMode=true -Dquarkus.rest-client.customerClient.url=http://acmeair-nginx1/customer $JAVA_OPTS -jar target/quarkus-app/quarkus-run.jar 1>out 2>err </dev/null &
+    $JAVA_HOME/bin/java -Xmx256m -Dhttp.keepalive=true -Dhttp.maxConnections=100  -Dquarkus.http.host=0.0.0.0 -XX:CRaCCheckpointTo=cr -Dquarkus.http.port=9080 -Dopenj9.internal.criu.unprivilegedMode=true -Dquarkus.rest-client.customerClient.url=http://acmeair-nginx1/customer -DcustomerClient/mp-rest/url=http://acmeair-nginx1/customer $JAVA_OPTS -jar target/quarkus-app/quarkus-run.jar 1>out 2>err </dev/null &
 
     #-Dquarkus.thread-pool.max-threads=2 -Dquarkus.thread-pool.core-threads=2
     sleep 20
